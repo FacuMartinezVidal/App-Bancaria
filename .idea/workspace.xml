@@ -23,7 +23,8 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "D:/UADE/App-Bancaria"
+    "last_opened_file_path": "D:/UADE/App-Bancaria",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
 }]]></component>
   <component name="RunManager">
@@ -59,6 +60,8 @@
       <option name="presentableId" value="Default" />
       <updated>1664751180717</updated>
       <workItem from="1664751182811" duration="15000" />
+      <workItem from="1664751238130" duration="72000" />
+      <workItem from="1664751321308" duration="122000" />
     </task>
     <servers />
   </component>

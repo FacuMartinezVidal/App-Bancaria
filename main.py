@@ -1,3 +1,2 @@
+numero = 2
 
-var = "hola"
-print(var)

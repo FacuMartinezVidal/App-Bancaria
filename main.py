@@ -1,2 +1,4 @@
-numero = 2
 
+variable = 'hola'
+
+suma = variable + 'mundo'

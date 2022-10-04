@@ -1,4 +1,3 @@
+# importo las librerias
 
-variable = 'hola'
-
-suma = variable + 'mundo'
+hola= "mundo"

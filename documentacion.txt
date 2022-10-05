@@ -1,0 +1,42 @@
+#Tipo de documentos 
+#099= personas fisicas o juridicas radicadas en el exterior
+#011= C.U.I.T/C.U.I.L./C.D.I.
+
+#Tipo de operaciones 
+#000001= adelantos a cuentas corrientes
+#000002= otros adelantos
+#000003= documentos a solo firma
+#000004= documentos descontados
+#000005= hipotecarios sobre la vivienda
+#000006= con otras garantias hipotecarias
+#000007= prendarios sobre automotores
+#000008= con otras garantias prendarias
+#000009= personales excluidos tarjetas
+#000010= personales tarjetas Visa
+#000011= personales tarjetas MasterCard
+#000012= personales tarjetas AngerCard
+#000013= personales tarjetas Diners
+#000014= personales tarjetas Cabal
+#000015= personales tarjetas Lider
+#000016= personales tarjetas Carta Credencial
+#000017= personales tarejtas American Express
+#000018= Otros prestamos
+#000019= creditos documentarios
+#000020= de titulos publicos
+#000021= de titulos privados
+#000022= prendarios PYMES decreto 2.586/92 y complementarios
+#000023= garantias otorgadas
+#000024= otros creditos por intermediacion financiera
+#000025= creditos por arrendamientos financieros
+#000026= creditos diversos
+#000027= prestamos interfinancieros y al sector publico no previsionales
+#000028= creditos adicional 
+#000029= acuerdos formalizados en cuenta corriente sin utilizar
+#000030= financiaciones de monto redu
+#000031= prefinanciaciones y financiaciones
+#000032= participacion en otras sociedades
+#000033= descuento de titulos de credito de acuerdo con el punto 1.1.14 de las normas sobre "Garantias"
+#000034= prestamos a entidades financieras publicas con participacion estatal mayoritaria cubiertos con garantias del gobierno de la respectiva jurisdiccion
+#000035= prestamos a instituciones de microcredito
+#000036= prestamos a micro emprendedores
+#000037= otros

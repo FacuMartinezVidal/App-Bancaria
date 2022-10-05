@@ -1,5 +1,6 @@
 
 #importaciones
+from hashlib import new
 import names
 import pandas as pd
 from random import randint as r
@@ -39,6 +40,19 @@ dataframe = [{'tipoDocumento':typeDocument(r(0,1)),'documento': r(20000000,50000
 
 #creacion de base de datos
 # database= pd.DataFrame(dataframe)
-f=4
-database=[{0}*f]
+
+
+
+def newDataBase(clients,keys):
+    dataframe=[]
+    columns={x:0 for x in keys}
+    for x in range(clients+1):
+        dataframe.append(columns)
+    return dataframe
+clients=200
+keys=['tipoDocumento','documento','nombreCompleto','operacion','codigoGarantia','tipoGarantia','codigoMoneda','capitalOperacion','interesCobrar','clasificacionDeudor','fecha1erVencimientoImpago','AtrasoDeuda','NumeroOperacion','cuentaContableCapital','fechaUltimoPago','tipoCartera']
+
+dataframe=newDataBase(clients,keys)
+database= pd.DataFrame(dataframe)
 print(database)
+database.to_excel("baseDatos.xlsx")

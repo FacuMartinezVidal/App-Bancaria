@@ -36,3 +36,7 @@ dataframe = pd.read_excel(database, sheet_name="Sheet1")
 # .to_xlsx () para guardar una nueva base de datos, y dentro del parentesis el nombre del nuevo archivo
 # pd.DataFrame(diccionario) creo una nueva base de datos a traves de diccionarios, donde la key es la columna y
 # value el valor que queres cargar en la columna
+
+import names
+
+print(names.get_full_name())

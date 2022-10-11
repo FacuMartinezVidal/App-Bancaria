@@ -7,17 +7,6 @@ from random import randint as r
 from datetime import date
 
 
-
-#funcion que crea la base de datos vacia
-def newDataBase(clients):
-    keys=['tipoDocumento','documento','nombreCompleto','operacion','codigoGarantia','tipoGarantia','codigoMoneda','capitalOperacion','interesCobrar','clasificacionDeudor','numeroOperacion','tipoCartera']
-    dataframe=[]
-    columns={x:0 for x in keys}
-    for x in range(clients):
-        dataframe.append(columns)
-    return dataframe
-clients=5
-
 #creacion de documento
 def typeDocument():
     value=r(0,1)
@@ -182,7 +171,8 @@ def operationNumber(operation):
             opNumber='131792'  
         return opNumber
 #asignacion de situacion de deudor de acuerdo al atraso 
-def debtorAssignment(debt):
+def debtorAssignment():
+    debt=r(0,360)
     if debt>=0 and debt<=30:
         debtSituation=1
     elif debt>=31 and debt<=90:
@@ -209,46 +199,34 @@ def interestCharge(typeWallet,operationCapital):
         interest=round(operationCapital*0.35)
     return interest
 
-#creacion de la base de dato vacia
-dataframe=newDataBase(clients)
 
-#Asignacion de valores independientes de la base de datos vacia
-for x in range (len(dataframe)):
-    for key in dataframe[x]:
-        if key=="tipoDocumento":
-            dataframe[x]['tipoDocumento']= typeDocument()
-        elif key=='nombreCompleto':
-            dataframe[x]['nombreCompleto']= randomName()
-        elif key=='operacion':
-            dataframe[x]['operacion']= typeOperation()
-        elif key=='codigoGarantia':
-            dataframe[x]['codigoGarantia']= randomGuaranteeCode()
-        elif key=='codigoMoneda':
-            dataframe[x]['codigoMoneda']= randomCurrencyCode()
-        elif key=='tipoCartera':
-            dataframe[x]['tipoCartera']= randomTypeWallet()
-        elif key=='clasifacionDeudor':
-            dataframe[x]['clasifacionDeudor']= debtorAssignment()
-        
 
-#Asignacion de valores dependientes de la base de datos vacia
-for x in range (len(dataframe)):
-    for key in dataframe[x]:
-        if key=='documento':
-            dataframe[x]['documento']= randomDocument(dataframe[x]['tipoDocumento'])
-        elif key=='tipoGarantia':
-            dataframe[x]['tipoGarantia']= typeGuarantee(dataframe[x]['codigoGarantia'])
-        elif key=='capitalOperacion':
-            dataframe[x]['capitalOperacion']= randomOperationCapital(dataframe[x]['tipoCartera'],dataframe[x]['codigoMoneda'])
+#creacion del dataframe
+keys=['tipoDocumento','documento','nombreCompleto','operacion','codigoGarantia','tipoGarantia','codigoMoneda','capitalOperacion','interesCobrar','clasificacionDeudor','numeroOperacion','tipoCartera']
+dataframe=[]
+clients=6
+for x in range(clients):
+    #creacion de diccionario con valores independientes
+    dictionary={'tipoDocumento':typeDocument(),'documento':0,'nombreCompleto':randomName(),'operacion':typeOperation(),'codigoGarantia':randomGuaranteeCode(),'capitalOperacion':0,'interesCobrar':0,'tipoGarantia':0,'codigoMoneda':randomCurrencyCode(),'clasificacionDeudor':debtorAssignment(),'numeroOperacion':0,'tipoCartera':randomTypeWallet()}
+    #asignando valores dependientes de los diccionarios
+    dictionary['documento']=randomDocument(dictionary['tipoDocumento'])
+    dictionary['tipoGarantia']=typeGuarantee(dictionary['codigoGarantia'])
+    dictionary['capitalOperacion']=randomOperationCapital(dictionary['tipoCartera'],dictionary['codigoMoneda'])
+    dictionary['interesCobrar']=interestCharge(dictionary['tipoCartera'],dictionary['capitalOperacion'])
+    dictionary['numeroOperacion']=operationNumber(dictionary['operacion'])
+    #los coloco en el dataframe
+    dataframe.append(dictionary)
+    dictionary={}
 
-#segunda asignacion de valores dependientes
-for x in range (len(dataframe)):
-    for key in dataframe[x]:
-        if key=='interesCobrar':
-            dataframe[x]['interesCobrar']= interestCharge(dataframe[x]['tipoCartera'],dataframe[x]['capitalOperacion'])
-        elif key=='numeroOperacion':
-            dataframe[x]['numeroOperacion']= operationNumber(dataframe[x]['operacion'])
-
-#conviertos la lista de diccionarios en una base de datos
-database= pd.DataFrame(dataframe)
+#creacion de la base de datos
 print(dataframe)
+database= pd.DataFrame(dataframe)
+print(database)
+
+#creacion del archivo excel
+database.to_excel('database.xlsx')
+
+
+
+
+

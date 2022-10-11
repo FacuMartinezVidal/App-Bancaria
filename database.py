@@ -9,60 +9,81 @@ from datetime import date
 
 #creacion de documento
 def typeDocument():
-    value=r(0,1)
-    if value==0:
-        type='011'
-    else:
-        type='099'
-    return type
+    errortype=r(0,100)
+    if errortype<80:
+        value=r(0,1)
+        if value==0:
+            type='011'
+        else:
+            type='099'
+        return type
+    if errortype>80:
+        invaliddoc=r(12,98)
+        strinvalid="0"+str(invaliddoc)
+        type=strinvalid
+        return type
 
 #creacion de nombres aleaotorios
 def randomName():
-    value=r(0,1)
-    if value==1:
-        sex='male'
+    blankname=r(0,100)
+    if blankname<80:
+        value=r(0,1)
+        if value==1:
+            sex='male'
+        else:
+            sex='female'
+        
+        name=names.get_full_name(gender=sex)
     else:
-        sex='female'
-    
-    name=names.get_full_name(gender=sex)
+        name=""
     return name
 
 #seleccion de tipo de operacion realizada por cada cliente
 def typeOperation():
-    value=r(1,37)
-    if len(str(value))==2:
-        operation='0000' + str(value)
+    value=r(1,50)
+    if value >=1 and value <=37:
+        if len(str(value))==2:
+            operation='0000' + str(value)
+        else:
+            operation='00000' + str(value)
+        
     else:
-        operation='00000' + str(value)
+        operation="0000" + str(value)
     return operation
 
 #creacion de documento de acuerdo el tipo de documento que tengas
 def randomDocument(valueTypeDocument):
-    unSexDocument=str(r(12000000,44000000))
-    if valueTypeDocument=='011':
-        secondValue=r(0,1)
-        if secondValue==0:
-            thirdValue=r(0,1)
-            if thirdValue==0:
-                secondType='30'
-                document=valueTypeDocument+secondType+unSexDocument
-                return document
-            else:
-                secondType='20'
-                document=valueTypeDocument+secondType+unSexDocument
-                return document
-        elif secondValue==1:
-            thirdValue=r(0,1)
-            if thirdValue==0:
-                secondType='33'
-                document=valueTypeDocument+secondType+unSexDocument
-                return document
-            else:
-                secondType='27'
-                document=valueTypeDocument+secondType+unSexDocument
-                return document
+    error=r(0,1)
+    
+    if error==0:
+        unSexDocument=str(r(12000000,44000000))
+        if valueTypeDocument=='011':
+            secondValue=r(0,1)
+            if secondValue==0:
+                thirdValue=r(0,1)
+                if thirdValue==0:
+                    secondType='30'
+                    document=valueTypeDocument+secondType+unSexDocument
+                    return document
+                else:
+                    secondType='20'
+                    document=valueTypeDocument+secondType+unSexDocument
+                    return document
+            elif secondValue==1:
+                thirdValue=r(0,1)
+                if thirdValue==0:
+                    secondType='33'
+                    document=valueTypeDocument+secondType+unSexDocument
+                    return document
+                else:
+                    secondType='27'
+                    document=valueTypeDocument+secondType+unSexDocument
+                    return document
+        else:
+            document=valueTypeDocument+unSexDocument
+            return document
     else:
-        document=valueTypeDocument+unSexDocument
+        document=0
         return document
 
 #seleccion del codigo de garantia aleatorio que tendra el prestamo

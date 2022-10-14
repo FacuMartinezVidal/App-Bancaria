@@ -204,7 +204,7 @@ def interestCharge(typeWallet,operationCapital):
 #creacion del dataframe
 keys=['tipoDocumento','documento','nombreCompleto','operacion','codigoGarantia','tipoGarantia','codigoMoneda','capitalOperacion','interesCobrar','clasificacionDeudor','numeroOperacion','tipoCartera']
 dataframe=[]
-clients=6
+clients=30
 for x in range(clients):
     #creacion de diccionario con valores independientes
     dictionary={'tipoDocumento':typeDocument(),'documento':0,'nombreCompleto':randomName(),'operacion':typeOperation(),'codigoGarantia':randomGuaranteeCode(),'capitalOperacion':0,'interesCobrar':0,'tipoGarantia':0,'codigoMoneda':randomCurrencyCode(),'clasificacionDeudor':debtorAssignment(),'numeroOperacion':0,'tipoCartera':randomTypeWallet()}

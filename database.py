@@ -219,12 +219,12 @@ for x in range(clients):
     dictionary={}
 
 #creacion de la base de datos
-print(dataframe)
-database= pd.DataFrame(dataframe)
-print(database)
+# print(dataframe)
+# database= pd.DataFrame(dataframe)
+# print(database)
 
 #creacion del archivo excel
-database.to_excel('database.xlsx')
+# database.to_excel('database.xlsx')
 
 
 

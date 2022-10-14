@@ -75,4 +75,3 @@ for dic in lst_carteraConsumo:
                 print(dic['situacionDeudor'])
                 lst_deudor2.append(dic)
                 
-print(lst_deudor2)

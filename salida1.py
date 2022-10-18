@@ -143,7 +143,7 @@ lst_deudor1[0] = dic_sd1g0
 lst_deudor1[1] = dic_sd1g1
 lst_deudor1[2] = dic_sd1g2
 
-print(lst_deudor1)
+# print(lst_deudor1)
 
 
 '''------------------------ DEUDA 2 ------------------------ '''
@@ -183,7 +183,7 @@ lst_deudor2[0] = dic_sd2g0
 lst_deudor2[1] = dic_sd2g1
 lst_deudor2[2] = dic_sd2g2
 
-print(lst_deudor2)
+# print(lst_deudor2)
 
 '''------------------------ DEUDA 3 ------------------------ '''
 
@@ -222,7 +222,7 @@ lst_deudor3[0] = dic_sd3g0
 lst_deudor3[1] = dic_sd3g1
 lst_deudor3[2] = dic_sd3g2
 
-print(lst_deudor3)
+# print(lst_deudor3)
 '''------------------------ DEUDA 4 ------------------------ '''
 
 # creo diccionarios para organizar la situacion de deuda en este caso 4, de acuerdo al tipo de garantia que tenga
@@ -258,7 +258,7 @@ lst_deudor4 = [0, 0, 0]
 lst_deudor4[0] = dic_sd4g0
 lst_deudor4[1] = dic_sd4g1
 lst_deudor4[2] = dic_sd4g2
-print(lst_deudor4)
+# print(lst_deudor4)
 
 
 '''------------------------ DEUDA 5 ------------------------ '''
@@ -296,15 +296,32 @@ lst_deudor5 = [0, 0, 0]
 lst_deudor5[0] = dic_sd5g0
 lst_deudor5[1] = dic_sd5g1
 lst_deudor5[2] = dic_sd5g2
-print(lst_deudor5)
+# print(lst_deudor5)
 
+
+# lista data frame
 lista_deudores = []
 
-lista_deudores.append(lst_deudor1)
-lista_deudores.append(lst_deudor2)
-lista_deudores.append(lst_deudor3)
-lista_deudores.append(lst_deudor4)
-lista_deudores.append(lst_deudor5)
+
+for x in lst_deudor1:
+    lista_deudores.append(x)
+
+for x in lst_deudor2:
+    lista_deudores.append(x)
+
+for x in lst_deudor3:
+    lista_deudores.append(x)
+
+for x in lst_deudor4:
+    lista_deudores.append(x)
+
+for x in lst_deudor5:
+    lista_deudores.append(x)
+# lista_deudores.append(lst_deudor1)
+# lista_deudores.append(lst_deudor2)
+# lista_deudores.append(lst_deudor3)
+# lista_deudores.append(lst_deudor4)
+# lista_deudores.append(lst_deudor5)
 
 
 print(lista_deudores, 'lista deudores')
@@ -314,3 +331,39 @@ datosDeudores = pd.DataFrame(lista_deudores)
 
 # creacion del excel
 datosDeudores.to_excel('datos_deudores.xlsx')
+
+
+# ruta de nuestro archivo
+filesheet = "./datos_deudores.xlsx"
+
+# creamos el objeto load_workbook
+wb = load_workbook(filesheet)
+
+# Seleccionamos el archivo
+sheet = wb.active
+
+# Deudor 1 - COlumna excel
+
+sheet['A1'] = 'Situacion deudor'
+sheet['A2'] = '1'
+sheet['A3'] = '1'
+sheet['A4'] = '1'
+
+sheet['A5'] = '2'
+sheet['A6'] = '2'
+sheet['A7'] = '2'
+
+sheet['A8'] = '3'
+sheet['A9'] = '3'
+sheet['A10'] = '3'
+
+sheet['A11'] = '4'
+sheet['A12'] = '4'
+sheet['A13'] = '4'
+
+
+sheet['A14'] = '5'
+sheet['A15'] = '5'
+sheet['A16'] = '5'
+# Guardamos el archivo con los cambios
+wb.save(filesheet)

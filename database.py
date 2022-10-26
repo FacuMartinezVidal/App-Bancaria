@@ -7,6 +7,7 @@ from random import randint as r
 from datetime import date
 
 
+
 #creacion de documento
 def typeDocument():
     errortype=r(0,100)
@@ -22,6 +23,8 @@ def typeDocument():
         strinvalid="0"+str(invaliddoc)
         type=strinvalid
         return type
+        
+
 
 #creacion de nombres aleaotorios
 def randomName():
@@ -38,8 +41,10 @@ def randomName():
         name=""
     return name
 
+
 #seleccion de tipo de operacion realizada por cada cliente
 def typeOperation():
+    
     value=r(1,50)
     if value >=1 and value <=37:
         if len(str(value))==2:
@@ -51,11 +56,12 @@ def typeOperation():
         operation="0000" + str(value)
     return operation
 
+
+
 #creacion de documento de acuerdo el tipo de documento que tengas
 def randomDocument(valueTypeDocument):
-    error=r(0,1)
-    
-    if error==0:
+    error=r(0,100)
+    if error<85:
         unSexDocument=str(r(12000000,44000000))
         if valueTypeDocument=='011':
             secondValue=r(0,1)
@@ -86,23 +92,30 @@ def randomDocument(valueTypeDocument):
         document=0
         return document
 
+
 #seleccion del codigo de garantia aleatorio que tendra el prestamo
 def randomGuaranteeCode():
-    guaranteeCode=r(0,33)
+    guaranteeCode=r(0,37)
     return guaranteeCode
+
 
 #asigo el tipo de garantia de acuerdo al codigo de garantia ya establecido
 def typeGuarantee(guaranteeCode):
-    if guaranteeCode==0:
-        typeValueGuarantee=0
-    elif guaranteeCode==1 or guaranteeCode==2 or guaranteeCode==3 or guaranteeCode==4 or guaranteeCode==5 or guaranteeCode==6 or guaranteeCode==7 or guaranteeCode==8 or guaranteeCode==9 or guaranteeCode==10 or guaranteeCode==11 or guaranteeCode==25 or guaranteeCode==31:
-        typeValueGuarantee=2
+    if guaranteeCode<33:
+        if guaranteeCode==0:
+            typeValueGuarantee=0
+        elif guaranteeCode==1 or guaranteeCode==2 or guaranteeCode==3 or guaranteeCode==4 or guaranteeCode==5 or guaranteeCode==6 or guaranteeCode==7 or guaranteeCode==8 or guaranteeCode==9 or guaranteeCode==10 or guaranteeCode==11 or guaranteeCode==25 or guaranteeCode==31:
+            typeValueGuarantee=2
+        else:
+            typeValueGuarantee=1
+        
     else:
-        typeValueGuarantee=1
+        typeValueGuarantee=r(3,10)
     return typeValueGuarantee
+
 #seleccion del codigo de moneda 
 def randomCurrencyCode():
-    currencyCode=r(0,1)
+    currencyCode=r(0,2)
     return currencyCode
 
 #seleccion aleatoria de tipo de Cartera
@@ -110,26 +123,40 @@ def randomTypeWallet():
     typeWallet=r(1,3)
     return typeWallet
 
+
+
 #creacion de capital de operacion de acuerdo al tipo de cartera del cliente y la moneda
 def randomOperationCapital(typeWallet,currencyCode):
     if typeWallet==1:
         operationCapital=r(50000,30000000)
         if currencyCode==0:
             return operationCapital
-        else:
+        elif currencyCode==1:
             return operationCapital//300
+        else:
+            operationCapital=0
+            return operationCapital
+            
     elif typeWallet==2:
         operationCapital=r(100000000,500000000)
         if currencyCode==0:
             return operationCapital
-        else:
+        elif currencyCode==1:
             return operationCapital//300
-    else:
+        else:
+            operationCapital=0
+            return operationCapital
+   
+    elif typeWallet==3:
         operationCapital=r(30000000,100000000)
         if currencyCode==0:
             return operationCapital
-        else:
+        elif currencyCode==1:
             return operationCapital//300
+        else:
+            operationCapital=0
+            return operationCapital
+
 
 #asignacion de numero de operacion
 def operationNumber(operation):
@@ -191,9 +218,11 @@ def operationNumber(operation):
         else:
             opNumber='131792'  
         return opNumber
+
+
 #asignacion de situacion de deudor de acuerdo al atraso 
 def debtorAssignment():
-    debt=r(0,360)
+    debt=r(0,500)
     if debt>=0 and debt<=30:
         debtSituation=1
     elif debt>=31 and debt<=90:
@@ -202,8 +231,10 @@ def debtorAssignment():
         debtSituation=3
     elif debt>=181 and debt<=360:
         debtSituation=4
-    else:
+    elif debt>=361 and debt<=460:
         debtSituation=5
+    else:
+        debtSituation=r(6,10)
     return debtSituation
 
 #asignacion de interes a cobrar de acuerdo al capital

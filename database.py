@@ -1,6 +1,7 @@
 
 #importaciones
 from hashlib import new
+from multiprocessing import Value
 import names
 import pandas as pd
 from random import randint as r
@@ -45,7 +46,7 @@ def randomName():
 #seleccion de tipo de operacion realizada por cada cliente
 def typeOperation():
     
-    value=r(1,50)
+    value=r(1,43)
     if value >=1 and value <=37:
         if len(str(value))==2:
             operation='0000' + str(value)
@@ -115,7 +116,7 @@ def typeGuarantee(guaranteeCode):
 
 #seleccion del codigo de moneda 
 def randomCurrencyCode():
-    currencyCode=r(0,2)
+    currencyCode=r(0,3)
     return currencyCode
 
 #seleccion aleatoria de tipo de Cartera
@@ -278,7 +279,89 @@ print(database)
 #creacion del archivo excel
 database.to_excel('database.xlsx')
 
+#errortipodocumento
+errortipodocumento=0
+capitalerrortipodoc=0
+for j in range(len(database)):  
+    if database.iloc[j]['tipoDocumento']!='011' and database.iloc[j]['tipoDocumento']!='099':
+        errortipodocumento=errortipodocumento+1
+        capitalerrortipodoc=capitalerrortipodoc+database.iloc[j]['capitalOperacion']
+
+#errordocumentoenblanco
+capitalerrordocumento=0
+errordocumento=0
+for i in range(len(database)):
+    if database.iloc[i]['documento']==0:
+        errordocumento=errordocumento+1
+        capitalerrordocumento=capitalerrordocumento+database.iloc[i]['capitalOperacion']
 
 
+#error nombre en blanco
+errornombre=0
+capitalerrornombre=0
+for a in range(len(database)):    
+    if database.iloc[a]['nombreCompleto']=="":
+        errornombre=errornombre+1
+        capitalerrornombre=capitalerrornombre+database.iloc[a]['capitalOperacion']
+
+
+#error operacion
+erroroperacion=0
+capitalerroroperacion=0
+for b in range(len(database)):
+    if database.iloc[b]['operacion']!='000001' and database.iloc[b]['operacion']!='000002' and database.iloc[b]['operacion']!='000003' and database.iloc[b]['operacion']!='000004' and database.iloc[b]['operacion']!='000005' and database.iloc[b]['operacion']!='000006' and database.iloc[b]['operacion']!='000007' and database.iloc[b]['operacion']!='000008' and database.iloc[b]['operacion']!='000009' and database.iloc[b]['operacion']!='000010' and database.iloc[b]['operacion']!='000011' and database.iloc[b]['operacion']!='000012' and database.iloc[b]['operacion']!='000013' and database.iloc[b]['operacion']!='000014' and database.iloc[b]['operacion']!='000015' and database.iloc[b]['operacion']!='000016' and database.iloc[b]['operacion']!='000017' and database.iloc[b]['operacion']!='000018' and database.iloc[b]['operacion']!='000019' and database.iloc[b]['operacion']!='000020' and database.iloc[b]['operacion']!='000021' and database.iloc[b]['operacion']!='000022' and database.iloc[b]['operacion']!='000023' and database.iloc[b]['operacion']!='000024' and database.iloc[b]['operacion']!='000025' and database.iloc[b]['operacion']!='000026' and database.iloc[b]['operacion']!='000027' and database.iloc[b]['operacion']!='000028' and database.iloc[b]['operacion']!='000029' and database.iloc[b]['operacion']!='000030' and database.iloc[b]['operacion']!='000031' and database.iloc[b]['operacion']!='000032' and database.iloc[b]['operacion']!='000033' and database.iloc[b]['operacion']!='000034' and database.iloc[b]['operacion']!='000035' and database.iloc[b]['operacion']!='000036' and database.iloc[b]['operacion']!='000037':
+        erroroperacion=erroroperacion+1
+        capitalerroroperacion=capitalerroroperacion+database.iloc[b]['capitalOperacion']
+
+#codigo de garantia error
+errorcodgarantia=0
+caperrorcodgarantia=0
+for c in range(len(database)):
+    if database.iloc[c]['codigoGarantia']>33:
+        errorcodgarantia=errorcodgarantia+1
+        caperrorcodgarantia=caperrorcodgarantia+database.iloc[c]['capitalOperacion']
+
+#tipo de garantia error
+errortipogarantia=0
+captipogarantia=0
+for d in range(len(database)):
+    if database.iloc[d]['tipoGarantia']>=3:
+        errortipogarantia=errortipogarantia+1
+        captipogarantia=captipogarantia+database.iloc[d]['capitalOperacion']
+
+#codigo de moneda no definido
+errorcodmoneda=0
+caperrorcodmoneda=0
+for e in range(len(database)):
+    if database.iloc[e]['codigoMoneda']>2:
+        errorcodmoneda=errorcodmoneda+1
+        caperrorcodmoneda=caperrorcodmoneda+database.iloc[e]['capitalOperacion']
+
+#capitaldeoperacion no valido 
+errorcapoperacion=0
+for f in range(len(database)):
+    if database.iloc[f]['capitalOperacion']==0:
+        errorcapoperacion=errorcapoperacion+1
+
+#clasificacionDeudor no definida 
+errorclasificaciondedeudor=0
+caperrorcladeudor=0
+for g in range(len(database)):
+    if database.iloc[g]['clasificacionDeudor']>5:
+        errorclasificaciondedeudor=errorclasificaciondedeudor+1
+        caperrorcladeudor=caperrorcladeudor+database.iloc[g]['capitalOperacion']
+
+
+
+
+print(errortipodocumento,"------",capitalerrortipodoc)
+print(errordocumento,"------",capitalerrordocumento)
+print(errornombre,"------",capitalerrornombre)
+print(erroroperacion,"------",capitalerroroperacion)
+print(errorcodgarantia,"------",caperrorcodgarantia)
+print(errortipogarantia,"------",captipogarantia)
+print(errorcodmoneda,"------",caperrorcodmoneda)
+print("error de capital no valido:",errorcapoperacion)
+print(errorclasificaciondedeudor,"------",caperrorcladeudor)
 
 

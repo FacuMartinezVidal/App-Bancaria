@@ -1,13 +1,17 @@
 
 #importaciones
+from distutils.log import error
 from hashlib import new
 from multiprocessing import Value
 import names
 import pandas as pd
 from random import randint as r
 from datetime import date
+from openpyxl import load_workbook
 
 
+fecha=date.today()
+sucursal=input("Ingrese el nombre de la sucursal:")
 
 #creacion de documento
 def typeDocument():
@@ -125,39 +129,33 @@ def randomTypeWallet():
     return typeWallet
 
 
-
 #creacion de capital de operacion de acuerdo al tipo de cartera del cliente y la moneda
 def randomOperationCapital(typeWallet,currencyCode):
-    if typeWallet==1:
-        operationCapital=r(50000,30000000)
-        if currencyCode==0:
-            return operationCapital
-        elif currencyCode==1:
-            return operationCapital//300
-        else:
-            operationCapital=0
-            return operationCapital
-            
-    elif typeWallet==2:
-        operationCapital=r(100000000,500000000)
-        if currencyCode==0:
-            return operationCapital
-        elif currencyCode==1:
-            return operationCapital//300
-        else:
-            operationCapital=0
-            return operationCapital
-   
-    elif typeWallet==3:
-        operationCapital=r(30000000,100000000)
-        if currencyCode==0:
-            return operationCapital
-        elif currencyCode==1:
-            return operationCapital//300
-        else:
-            operationCapital=0
-            return operationCapital
-
+    docazar=r(0,100)
+    if docazar<95:
+        if typeWallet==1:
+            operationCapital=r(50000,30000000)
+            if currencyCode==0:
+                return operationCapital
+            elif currencyCode==1:
+                return operationCapital//300
+                
+        elif typeWallet==2:
+            operationCapital=r(100000000,500000000)
+            if currencyCode==0:
+                return operationCapital
+            elif currencyCode==1:
+                return operationCapital//300
+    
+        elif typeWallet==3:
+            operationCapital=r(30000000,100000000)
+            if currencyCode==0:
+                return operationCapital
+            elif currencyCode==1:
+                return operationCapital//300
+    else:
+        operationCapital=r(1,100)
+    return operationCapital
 
 #asignacion de numero de operacion
 def operationNumber(operation):
@@ -245,7 +243,7 @@ def interestCharge(typeWallet,operationCapital):
     elif typeWallet==2:
         interest=round(operationCapital*0.2)
     elif typeWallet==3:
-        interest=operationCapital*0.25
+        interest=round(operationCapital*0.25)
     elif typeWallet==4:
         interest=round(operationCapital*0.3)
     else:
@@ -257,7 +255,7 @@ def interestCharge(typeWallet,operationCapital):
 #creacion del dataframe
 keys=['tipoDocumento','documento','nombreCompleto','operacion','codigoGarantia','tipoGarantia','codigoMoneda','capitalOperacion','interesCobrar','clasificacionDeudor','numeroOperacion','tipoCartera']
 dataframe=[]
-clients=6
+clients=30
 for x in range(clients):
     #creacion de diccionario con valores independientes
     dictionary={'tipoDocumento':typeDocument(),'documento':0,'nombreCompleto':randomName(),'operacion':typeOperation(),'codigoGarantia':randomGuaranteeCode(),'capitalOperacion':0,'interesCobrar':0,'tipoGarantia':0,'codigoMoneda':randomCurrencyCode(),'clasificacionDeudor':debtorAssignment(),'numeroOperacion':0,'tipoCartera':randomTypeWallet()}
@@ -279,89 +277,188 @@ print(database)
 #creacion del archivo excel
 database.to_excel('database.xlsx')
 
+#Suma intereses a cobrar
+h=0
+sumaintereses=0
+for h in range(len(database)):
+    sumaintereses=sumaintereses+database.iloc[h]['interesCobrar']
+    h+1
+
+
+k=0
+sumacapital=0
+for k in range(len(database)):
+    sumacapital=sumacapital+database.iloc[k]['capitalOperacion']
+    k+1
+
+errores=[]
+
 #errortipodocumento
+j=0
 errortipodocumento=0
 capitalerrortipodoc=0
 for j in range(len(database)):  
     if database.iloc[j]['tipoDocumento']!='011' and database.iloc[j]['tipoDocumento']!='099':
         errortipodocumento=errortipodocumento+1
-        capitalerrortipodoc=capitalerrortipodoc+database.iloc[j]['capitalOperacion']
+        if j not in errores:
+            capitalerrortipodoc=capitalerrortipodoc+database.iloc[j]['capitalOperacion']
+            errores.append(j)
+    j+1
 
 #errordocumentoenblanco
+i=0
 capitalerrordocumento=0
 errordocumento=0
 for i in range(len(database)):
     if database.iloc[i]['documento']==0:
         errordocumento=errordocumento+1
-        capitalerrordocumento=capitalerrordocumento+database.iloc[i]['capitalOperacion']
-
+        if i not in errores:
+            capitalerrordocumento=capitalerrordocumento+database.iloc[i]['capitalOperacion']
+            errores.append(i)
+    i+1
 
 #error nombre en blanco
+a=0
 errornombre=0
 capitalerrornombre=0
 for a in range(len(database)):    
     if database.iloc[a]['nombreCompleto']=="":
         errornombre=errornombre+1
-        capitalerrornombre=capitalerrornombre+database.iloc[a]['capitalOperacion']
-
+        if a not in errores:
+            capitalerrornombre=capitalerrornombre+database.iloc[a]['capitalOperacion']
+            errores.append(a)
+    a+1
 
 #error operacion
+b=0
 erroroperacion=0
 capitalerroroperacion=0
 for b in range(len(database)):
     if database.iloc[b]['operacion']!='000001' and database.iloc[b]['operacion']!='000002' and database.iloc[b]['operacion']!='000003' and database.iloc[b]['operacion']!='000004' and database.iloc[b]['operacion']!='000005' and database.iloc[b]['operacion']!='000006' and database.iloc[b]['operacion']!='000007' and database.iloc[b]['operacion']!='000008' and database.iloc[b]['operacion']!='000009' and database.iloc[b]['operacion']!='000010' and database.iloc[b]['operacion']!='000011' and database.iloc[b]['operacion']!='000012' and database.iloc[b]['operacion']!='000013' and database.iloc[b]['operacion']!='000014' and database.iloc[b]['operacion']!='000015' and database.iloc[b]['operacion']!='000016' and database.iloc[b]['operacion']!='000017' and database.iloc[b]['operacion']!='000018' and database.iloc[b]['operacion']!='000019' and database.iloc[b]['operacion']!='000020' and database.iloc[b]['operacion']!='000021' and database.iloc[b]['operacion']!='000022' and database.iloc[b]['operacion']!='000023' and database.iloc[b]['operacion']!='000024' and database.iloc[b]['operacion']!='000025' and database.iloc[b]['operacion']!='000026' and database.iloc[b]['operacion']!='000027' and database.iloc[b]['operacion']!='000028' and database.iloc[b]['operacion']!='000029' and database.iloc[b]['operacion']!='000030' and database.iloc[b]['operacion']!='000031' and database.iloc[b]['operacion']!='000032' and database.iloc[b]['operacion']!='000033' and database.iloc[b]['operacion']!='000034' and database.iloc[b]['operacion']!='000035' and database.iloc[b]['operacion']!='000036' and database.iloc[b]['operacion']!='000037':
         erroroperacion=erroroperacion+1
-        capitalerroroperacion=capitalerroroperacion+database.iloc[b]['capitalOperacion']
+        if b not in errores:
+            capitalerroroperacion=capitalerroroperacion+database.iloc[b]['capitalOperacion']
+            errores.append(b)
+    b+1
 
 #codigo de garantia error
+c=0
 errorcodgarantia=0
 caperrorcodgarantia=0
 for c in range(len(database)):
     if database.iloc[c]['codigoGarantia']>33:
         errorcodgarantia=errorcodgarantia+1
-        caperrorcodgarantia=caperrorcodgarantia+database.iloc[c]['capitalOperacion']
+        if c not in errores:
+            caperrorcodgarantia=caperrorcodgarantia+database.iloc[c]['capitalOperacion']
+            errores.append(c)
+    c+1
 
 #tipo de garantia error
+d=0
 errortipogarantia=0
 captipogarantia=0
 for d in range(len(database)):
     if database.iloc[d]['tipoGarantia']>=3:
         errortipogarantia=errortipogarantia+1
-        captipogarantia=captipogarantia+database.iloc[d]['capitalOperacion']
+        if d not in errores:
+            captipogarantia=captipogarantia+database.iloc[d]['capitalOperacion']
+            errores.append(d)
+    d+1
 
 #codigo de moneda no definido
+e=0
 errorcodmoneda=0
 caperrorcodmoneda=0
 for e in range(len(database)):
     if database.iloc[e]['codigoMoneda']>2:
         errorcodmoneda=errorcodmoneda+1
-        caperrorcodmoneda=caperrorcodmoneda+database.iloc[e]['capitalOperacion']
+        if e not in errores:
+            caperrorcodmoneda=caperrorcodmoneda+database.iloc[e]['capitalOperacion']
+            errores.append(e)
+    e+1
 
 #capitaldeoperacion no valido 
+f=0
 errorcapoperacion=0
 for f in range(len(database)):
     if database.iloc[f]['capitalOperacion']==0:
         errorcapoperacion=errorcapoperacion+1
+    f+1
+
 
 #clasificacionDeudor no definida 
+g=0
 errorclasificaciondedeudor=0
 caperrorcladeudor=0
 for g in range(len(database)):
     if database.iloc[g]['clasificacionDeudor']>5:
         errorclasificaciondedeudor=errorclasificaciondedeudor+1
-        caperrorcladeudor=caperrorcladeudor+database.iloc[g]['capitalOperacion']
+        if g not in errores:
+            caperrorcladeudor=caperrorcladeudor+database.iloc[g]['capitalOperacion']
+            errores.append(g)
+    g+1
+
+
+data=["Tipo de documento invalido ","Numero de documento invalido ","Nombre en blanco ","Codigo de operacion","Codigo de garantia","Tipo de garantia","Codigo de moneda","Capital no valido","Clasificacion de deudor"]
+columns=["Tipo de error","Cantidad de errores"," ","  ","   ","    ","     ","      ","Suma de capital"]
+
+
+dbs1=[]
+dfs1=pd.DataFrame(dbs1)
+dfs1.to_excel('controlerrores.xlsx')
+
+filesheet="./controlerrores.xlsx"
+wb=load_workbook(filesheet)
+
+sheet=wb.active
+
+sheet.merge_cells('A1:L1')
+sheet['A1']="Control de errores"
+sheet['A3']="Sucursal"
+sheet['A5']="Fecha de la cartera"
+sheet['A7']="Total del capital de las operaciones (INT)"
+sheet['A8']="Interes devengado a cobrar(INT)"
+sheet['A9']="Deuda total Cap+Intc(INT)"
+sheet['A10']="Cantidad de registros del archivo"
+sheet['H3']=sucursal
+sheet['H5']=fecha
+sheet['H7']=str(sumacapital)+"$"
+sheet['H8']=str(sumaintereses)+"$"
+sheet['H9']=str(sumacapital+sumaintereses)+"$"
+sheet['H10']=clients
 
 
 
+sheet.merge_cells('A11:L11')
+sheet['A11']="--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+sheet['A12']="Tipo de error"
+sheet['A14']="Tipo de documento invalido-"
+sheet['A16']="Numero de documento invalido-"
+sheet['A18']="Nombre en blanco-"
+sheet['A20']="Codigo de operacion invalido-"
+sheet['A22']="Codigo de garantia-"
+sheet['A24']="Tipo de garantia-"
+sheet['A26']="Codigo de moneda-"
+sheet['A28']="Capital no valido-"
+sheet['A30']="Clasificacion de deudor-"
+sheet['B12']="Cantidad de errores"
+sheet['B14']=errortipodocumento
+sheet['B16']=errordocumento
+sheet['B18']=errornombre
+sheet['B20']=erroroperacion
+sheet['B22']=errorcodgarantia
+sheet['B24']=errortipogarantia
+sheet['B26']=errorcodmoneda
+sheet['B28']=errorcapoperacion
+sheet['B30']=errorclasificaciondedeudor
+sheet['H12']="Suma capital de errores"
+sheet['H14']=str(capitalerrortipodoc)+"$"
+sheet['H16']=str(capitalerrordocumento)+"$"
+sheet['H18']=str(capitalerrornombre)+"$"
+sheet['H20']=str(capitalerroroperacion)+"$"
+sheet['H22']=str(caperrorcodgarantia)+"$"
+sheet['H24']=str(captipogarantia)+"$"
+sheet['H26']=str(caperrorcodmoneda)+"$"
+sheet['H30']=str(caperrorcladeudor)+"$"
 
-print(errortipodocumento,"------",capitalerrortipodoc)
-print(errordocumento,"------",capitalerrordocumento)
-print(errornombre,"------",capitalerrornombre)
-print(erroroperacion,"------",capitalerroroperacion)
-print(errorcodgarantia,"------",caperrorcodgarantia)
-print(errortipogarantia,"------",captipogarantia)
-print(errorcodmoneda,"------",caperrorcodmoneda)
-print("error de capital no valido:",errorcapoperacion)
-print(errorclasificaciondedeudor,"------",caperrorcladeudor)
-
-
+wb.save(filesheet)
